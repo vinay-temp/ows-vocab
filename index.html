@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Quiz Game</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        .quiz-container {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ffffff;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .option {
+            background-color: #333333;
+            color: #ffffff;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 45%;
+        }
+
+        .option:hover {
+            background-color: #444444;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        input {
+            padding: 10px;                /* Add some padding */
+            font-size: 16px;              /* Increase font size */
+            border: 1px solid #ccc;       /* Add border */
+            border-radius: 4px;           /* Rounded corners */
+            text-align: center;
+            width: 125px;
+        }
+
+        /* Hide the number input spinners for WebKit browsers (Chrome, Safari) */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none; /* Hides the spinners */
+            margin: 0;                /* Remove any default margin */
+        }
+
+        /* Hide the number input spinners for Firefox */
+        input[type=number] {
+            -moz-appearance: textfield; /* Hides the spinners */
+        }
+
+        #submit-button {
+            padding: 10px;                /* Add some padding */
+            font-size: 16px;              /* Increase font size */
+            border: 1px solid #ccc;       /* Add border */
+            border-radius: 4px;           /* Rounded corners */
+            text-align: center;
+            width: 125px;
+        }
+    </style>
+</head>
+<body>
+
+    
+    <form id="form">
+        <input id="target" type="number" required min="10" max="516">
+        <button id="submit-button" type="submit">Submit</button>
+    </form>
+
+    <div class="quiz-container hidden" id="quiz-container">
+        <h1 id="question"></h1>
+        <div class="options">
+            <button class="option" id="option0"></button>
+            <button class="option" id="option1"></button>
+            <button class="option" id="option2"></button>
+            <button class="option" id="option3"></button>
+            <button class="option" id="option4"></button>
+            <button class="option" id="option5"></button>
+        </div>
+    </div>
+
+    <script src="ows.js"></script>
+    <script src="shuffle.js"></script>
+
+    <script>
+        var TARGET;
+        var QUESTION;
+        var ANSWER;
+        var seen = new Set();
+
+        function newQuestion() {
+            if (seen.size == TARGET) {
+                QUESTION = "COMPLETED";
+                document.querySelector('.options').innerHTML = "";
+                return [];
+            }
+
+            var num = Math.floor(Math.random() * (TARGET + 1));
+            while (seen.has(num)) {
+                num = Math.floor(Math.random() * (TARGET + 1));
+            }
+            seen.add(num);
+
+            QUESTION = questions[num];
+            ANSWER = answers[num];
+
+            var options = [];
+            var chosen = new Set();
+            
+            options.push(num);
+            chosen.add(num);
+
+            while (chosen.size < 6) {
+                let opt = Math.floor(Math.random() * (TARGET + 1));
+                if (!chosen.has(opt)) {
+                    chosen.add(opt);
+                    options.push(opt);
+                }
+            }
+
+            shuffleArray(options);
+            return options;
+        }
+
+        function updateQuestion() {
+            let options = newQuestion();
+            document.getElementById('question').innerHTML = `${seen.size}) ${QUESTION}`;
+
+            for (let i = 0; i < options.length; i++) {
+                document.getElementById('option' + i).innerHTML = answers[options[i]];
+            }
+        }
+
+        function checkAnswer(button) {
+            if (ANSWER == button.innerHTML) {
+                updateQuestion();
+            }
+        }
+
+        
+        let buttons = document.querySelectorAll('.option');
+        
+        buttons.forEach((button, index) => {
+            button.addEventListener('click', function() {
+                checkAnswer(button);
+            });
+        });
+
+        const form = document.getElementById('form');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            TARGET = parseInt(document.getElementById("target").value);
+            
+            form.classList.toggle("hidden");
+            document.getElementById("quiz-container").classList.toggle("hidden");
+            updateQuestion();
+
+        });
+
+    </script>
+
+</body>
+</html>
