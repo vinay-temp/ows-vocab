@@ -54,7 +54,7 @@
         }
 
         .hidden {
-            display: none;
+            display: none !important;
         }
 
         input {
@@ -64,6 +64,7 @@
             border-radius: 4px;           /* Rounded corners */
             text-align: center;
             width: 125px;
+            margin: 10px;
         }
 
         /* Hide the number input spinners for WebKit browsers (Chrome, Safari) */
@@ -85,14 +86,24 @@
             border-radius: 4px;           /* Rounded corners */
             text-align: center;
             width: 125px;
+            margin: 10px;
         }
+        
+        #form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
     </style>
 </head>
 <body>
 
     
     <form id="form">
-        <input id="target" type="number" required min="10" max="516">
+        <h2>Valid range 1 to 516</h2>
+        <input id="start" type="number" required min="1" max="500" placeholder="Start">
+        <input id="end" type="number" required min="10" max="516" placeholder="End">
         <button id="submit-button" type="submit">Submit</button>
     </form>
 
@@ -112,6 +123,8 @@
     <script src="shuffle.js"></script>
 
     <script>
+        var START;
+        var END;
         var TARGET;
         var QUESTION;
         var ANSWER;
@@ -124,11 +137,12 @@
                 return [];
             }
 
-            var num = Math.floor(Math.random() * (TARGET + 1));
+            var num = Math.floor(Math.random() * TARGET);
             while (seen.has(num)) {
-                num = Math.floor(Math.random() * (TARGET + 1));
+                num = Math.floor(Math.random() * TARGET);
             }
             seen.add(num);
+            console.log(START + num);
 
             QUESTION = questions[num];
             ANSWER = answers[num];
@@ -140,7 +154,7 @@
             chosen.add(num);
 
             while (chosen.size < 6) {
-                let opt = Math.floor(Math.random() * (TARGET + 1));
+                let opt = Math.floor(Math.random() * TARGET);
                 if (!chosen.has(opt)) {
                     chosen.add(opt);
                     options.push(opt);
@@ -179,7 +193,17 @@
 
         form.addEventListener('submit', function(event) {
             event.preventDefault();
-            TARGET = parseInt(document.getElementById("target").value);
+            START = parseInt(document.getElementById("start").value);
+            END = parseInt(document.getElementById("end").value);
+            TARGET = END - START + 1;
+
+            questions = questions.slice(START-1, END);
+            answers = answers.slice(START-1, END);
+
+            if (START > END) {
+                return alert("Invalid Values");
+            }
+
             
             form.classList.toggle("hidden");
             document.getElementById("quiz-container").classList.toggle("hidden");
