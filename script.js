@@ -18,7 +18,7 @@ var seen = new Set();
 function newQuestion() {
   if (seen.size == TARGET) {
     QUESTION = "COMPLETED";
-    document.querySelector(".options").innerHTML = "";
+    document.getElementById("options").innerHTML = "";
     return [];
   }
 
@@ -51,7 +51,7 @@ function newQuestion() {
 
 function updateQuestion() {
   let options = newQuestion();
-  document.getElementById("question").innerHTML = `${seen.size}) ${QUESTION}`;
+  document.getElementById("question").innerHTML = `${SCORE + 1}) ${QUESTION}`;
 
   for (let i = 0; i < options.length; i++) {
     document.getElementById("option" + i).innerHTML = answers[options[i]];
