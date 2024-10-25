@@ -51,13 +51,13 @@ function newQuestion() {
 
 function updateQuestion() {
   let options = newQuestion();
-  document.getElementById("question").innerHTML = `${SCORE + 1}) ${QUESTION}`;
+  document.getElementById("question").innerHTML = `${QUESTION}`;
 
   for (let i = 0; i < options.length; i++) {
     document.getElementById("option" + i).innerHTML = answers[options[i]];
   }
 
-  document.getElementById("score").innerHTML = `Score: ${SCORE}/${TARGET}`;
+  document.getElementById("score").innerHTML = `${SCORE}/${TARGET}`;
 }
 
 let buttons = document.querySelectorAll(".option");
@@ -84,12 +84,14 @@ form.addEventListener("submit", function (event) {
   END = parseInt(document.getElementById("end").value);
   TARGET = END - START + 1;
 
+  if (TARGET < 10) {
+    return alert("Range cannot be less than 10!");
+  }
+
+
   questions = questions.slice(START - 1, END);
   answers = answers.slice(START - 1, END);
 
-  if (START > END) {
-    return alert("Invalid Values");
-  }
 
   form.classList.toggle("hidden");
   document.getElementById("quiz-container").classList.toggle("hidden");
