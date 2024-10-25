@@ -1,0 +1,116 @@
+body {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+}
+
+.quiz-container {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ffffff;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 100%;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.option {
+    background-color: #333333;
+    color: #ffffff;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 45%;
+}
+
+.option:hover {
+    background-color: #444444;
+}
+
+.hidden {
+    display: none !important;
+}
+
+input {
+    padding: 10px;
+    /* Add some padding */
+    font-size: 16px;
+    /* Increase font size */
+    border: 1px solid #ccc;
+    /* Add border */
+    border-radius: 4px;
+    /* Rounded corners */
+    text-align: center;
+    width: 125px;
+    margin: 10px;
+}
+
+/* Hide the number input spinners for WebKit browsers (Chrome, Safari) */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    /* Hides the spinners */
+    margin: 0;
+    /* Remove any default margin */
+}
+
+/* Hide the number input spinners for Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+    /* Hides the spinners */
+}
+
+#submit-button {
+    padding: 10px;
+    /* Add some padding */
+    font-size: 16px;
+    /* Increase font size */
+    border: 1px solid #ccc;
+    /* Add border */
+    border-radius: 4px;
+    /* Rounded corners */
+    text-align: center;
+    width: 125px;
+    margin: 10px;
+}
+
+#form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.category {
+    background-color: #333333;
+    color: #ffffff;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 45%;
+}
+
+.category:hover {
+    background-color: #444444;
+}

@@ -1,4 +1,4 @@
-var questions = [
+var ows_questions = [
   "A place where animals are slaughtered for consumption as food",
   "The superior of a monastery",
   "Deviation from the right course",
@@ -518,7 +518,7 @@ var questions = [
 ];
 
 
-var answers = [
+var ows_answers = [
   "Abattoir",
   "Abbot",
   "Aberration",

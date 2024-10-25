@@ -3,107 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Quiz Game</title>
-    <style>
-        body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            flex-direction: column;
-        }
-
-        .quiz-container {
-            text-align: center;
-            padding: 20px;
-            border: 1px solid #ffffff;
-            border-radius: 10px;
-            max-width: 500px;
-            width: 100%;
-        }
-
-        h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        .options {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
-
-        .option {
-            background-color: #333333;
-            color: #ffffff;
-            padding: 10px 20px;
-            margin: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            width: 45%;
-        }
-
-        .option:hover {
-            background-color: #444444;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        input {
-            padding: 10px;                /* Add some padding */
-            font-size: 16px;              /* Increase font size */
-            border: 1px solid #ccc;       /* Add border */
-            border-radius: 4px;           /* Rounded corners */
-            text-align: center;
-            width: 125px;
-            margin: 10px;
-        }
-
-        /* Hide the number input spinners for WebKit browsers (Chrome, Safari) */
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-            -webkit-appearance: none; /* Hides the spinners */
-            margin: 0;                /* Remove any default margin */
-        }
-
-        /* Hide the number input spinners for Firefox */
-        input[type=number] {
-            -moz-appearance: textfield; /* Hides the spinners */
-        }
-
-        #submit-button {
-            padding: 10px;                /* Add some padding */
-            font-size: 16px;              /* Increase font size */
-            border: 1px solid #ccc;       /* Add border */
-            border-radius: 4px;           /* Rounded corners */
-            text-align: center;
-            width: 125px;
-            margin: 10px;
-        }
-        
-        #form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-    </style>
+    <title>Vocab Practice</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
+    <div class="quiz-container" id="category-select">
+        <h1><u>Vocab Practice</u></h1>
+        <div class="options">
+            <button class="category" value="ows">OWS</button>
+            <button class="category" value="syno">Synonyms</button>
+            <button class="category" value="anto">Antonyms</button>
+            <button class="category" value="mixed">Mixed</button>
+        </div>
+    </div>
     
-    <form id="form">
-        <h2>Valid range 1 to 516</h2>
-        <input id="start" type="number" required min="1" max="500" placeholder="Start">
-        <input id="end" type="number" required min="10" max="516" placeholder="End">
+    
+    <form id="form" class="hidden">
+        <h1><u id="title"></u></h1>
+        <h2 id="range"></h2>
+        <input id="start" type="number" required min="1" placeholder="Start">
+        <input id="end" type="number" required min="10" placeholder="End">
         <button id="submit-button" type="submit">Submit</button>
     </form>
 
@@ -117,101 +36,15 @@
             <button class="option" id="option4"></button>
             <button class="option" id="option5"></button>
         </div>
+        <h4 id="score"></h4>
     </div>
+    
 
     <script src="ows.js"></script>
+    <script src="syno.js"></script>
+    <script src="anto.js"></script>
     <script src="shuffle.js"></script>
-
-    <script>
-        var START;
-        var END;
-        var TARGET;
-        var QUESTION;
-        var ANSWER;
-        var seen = new Set();
-
-        function newQuestion() {
-            if (seen.size == TARGET) {
-                QUESTION = "COMPLETED";
-                document.querySelector('.options').innerHTML = "";
-                return [];
-            }
-
-            var num = Math.floor(Math.random() * TARGET);
-            while (seen.has(num)) {
-                num = Math.floor(Math.random() * TARGET);
-            }
-            seen.add(num);
-            console.log(START + num);
-
-            QUESTION = questions[num];
-            ANSWER = answers[num];
-
-            var options = [];
-            var chosen = new Set();
-            
-            options.push(num);
-            chosen.add(num);
-
-            while (chosen.size < 6) {
-                let opt = Math.floor(Math.random() * TARGET);
-                if (!chosen.has(opt)) {
-                    chosen.add(opt);
-                    options.push(opt);
-                }
-            }
-
-            shuffleArray(options);
-            return options;
-        }
-
-        function updateQuestion() {
-            let options = newQuestion();
-            document.getElementById('question').innerHTML = `${seen.size}) ${QUESTION}`;
-
-            for (let i = 0; i < options.length; i++) {
-                document.getElementById('option' + i).innerHTML = answers[options[i]];
-            }
-        }
-
-        function checkAnswer(button) {
-            if (ANSWER == button.innerHTML) {
-                updateQuestion();
-            }
-        }
-
-        
-        let buttons = document.querySelectorAll('.option');
-        
-        buttons.forEach((button, index) => {
-            button.addEventListener('click', function() {
-                checkAnswer(button);
-            });
-        });
-
-        const form = document.getElementById('form');
-
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            START = parseInt(document.getElementById("start").value);
-            END = parseInt(document.getElementById("end").value);
-            TARGET = END - START + 1;
-
-            questions = questions.slice(START-1, END);
-            answers = answers.slice(START-1, END);
-
-            if (START > END) {
-                return alert("Invalid Values");
-            }
-
-            
-            form.classList.toggle("hidden");
-            document.getElementById("quiz-container").classList.toggle("hidden");
-            updateQuestion();
-
-        });
-
-    </script>
+    <script src="script.js"></script>
 
 </body>
 </html>
