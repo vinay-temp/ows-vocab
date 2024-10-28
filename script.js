@@ -16,6 +16,18 @@ var QUESTION;
 var ANSWER;
 var seen = new Set();
 
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    // Generate a random index between 0 and i
+    let j = Math.floor(Math.random() * (i + 1));
+
+    // Swap elements array[i] and array[j]
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+
 function newQuestion() {
   if (seen.size == TARGET) {
     QUESTION = "COMPLETED";
@@ -29,9 +41,15 @@ function newQuestion() {
   }
   seen.add(num);
 
+  if (Math.round(Math.random())) {
+    let temp = answers;
+    answers = questions;
+    questions = temp;
+    console.log("hello")
+  }
+
   QUESTION = questions[num];
   ANSWER = answers[num];
-
   var options = [];
   var chosen = new Set();
 
@@ -56,6 +74,7 @@ function updateQuestion() {
 
   for (let i = 0; i < options.length; i++) {
     document.getElementById("option" + i).innerHTML = answers[options[i]];
+    document.getElementById("option" + i).value = answers[options[i]];
   }
 
   document.getElementById("score").innerHTML = `${SCORE}/${TARGET}`;
@@ -65,7 +84,7 @@ let buttons = document.querySelectorAll(".option");
 
 buttons.forEach((button, index) => {
   button.addEventListener("click", function () {
-    if (ANSWER == button.innerHTML) {
+    if (ANSWER == button.value) {
         SCORE += 1;
         updateQuestion();
       buttons.forEach((btn, i) => {
