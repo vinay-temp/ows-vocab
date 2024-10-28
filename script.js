@@ -114,15 +114,10 @@ category_btns = document.querySelectorAll(".category");
 
 category_btns.forEach((btn, index) => {
     btn.addEventListener("click", function() {
-        if (btn.value == "ows") {
-            document
+        document
               .getElementById("category-select")
               .classList.toggle("hidden");
             updateForm(btn.value);
             document.getElementById("form").classList.toggle("hidden");
-        } else {
-            alert("Category is not yet added!");
-        }
-        
     })
 })
