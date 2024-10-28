@@ -1,5 +1,6 @@
 var CATEGORY = {
   ows: ["One Word Substitution", 516, ows_questions, ows_answers],
+  idioms: ["Idioms", 415, idioms_questions, idioms_answers],
   syno: ["Synonyms", 0, syno_questions, syno_answers],
   anto: ["Antonyms", 0, anto_questions, anto_answers],
   mixed: ["Mixed Questions", 0, [], []],
