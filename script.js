@@ -1,9 +1,20 @@
 var CATEGORY = {
-  ows: ["One Word Substitution", 516, ows_questions, ows_answers],
-  idioms: ["Idioms", 415, idioms_questions, idioms_answers],
-  syno: ["Synonyms", 0, syno_questions, syno_answers],
-  anto: ["Antonyms", 0, anto_questions, anto_answers],
-  mixed: ["Mixed Questions", 0, [], []],
+  ows: [
+    "One Word Substitution",
+    516,
+    ows_questions,
+    ows_answers,
+    "https://drive.google.com/file/d/1V-2_eM9RfZbq2vLNVqylp1oLAfCAkiHc/view?usp=sharing",
+  ],
+  idioms: [
+    "Idioms",
+    415,
+    idioms_questions,
+    idioms_answers,
+    "https://drive.google.com/file/d/1BrAQJvn-EOztbpQ4iOkn5pgGWidC_0GI/view?usp=sharing",
+  ],
+  syno: ["Synonyms", 0, syno_questions, syno_answers, ""],
+  anto: ["Antonyms", 0, anto_questions, anto_answers, ""],
 };
 
 var questions;
@@ -121,6 +132,7 @@ form.addEventListener("submit", function (event) {
 function updateForm(category) {
     let data = CATEGORY[category]
     document.getElementById("title").innerHTML = data[0];
+    document.getElementById("learn-resource").href = data[4];
     document.getElementById("range").innerHTML = `Valid range 1 to ${data[1]}`;
     questions = data[2];
     answers = data[3];

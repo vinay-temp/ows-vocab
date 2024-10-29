@@ -114,3 +114,7 @@ input[type=number] {
 .category:hover {
     background-color: #444444;
 }
+
+a {
+    color: rgb(101, 101, 190);
+}
