@@ -15,6 +15,13 @@ var CATEGORY = {
   ],
   syno: ["Synonyms", 0, syno_questions, syno_answers, ""],
   anto: ["Antonyms", 0, anto_questions, anto_answers, ""],
+  spellings: [
+    "Spellings",
+    250,
+    spellings_data,
+    undefined,
+    "https://drive.google.com/file/d/1Ouz9pS-XAvCL35aWru1ZhV_mzT_Yif2t/view?usp=sharing",
+  ],
 };
 
 var questions;
@@ -56,7 +63,6 @@ function newQuestion() {
     let temp = answers;
     answers = questions;
     questions = temp;
-    console.log("hello")
   }
 
   QUESTION = questions[num];
@@ -131,9 +137,11 @@ form.addEventListener("submit", function (event) {
 
 function updateForm(category) {
     let data = CATEGORY[category]
+
     document.getElementById("title").innerHTML = data[0];
     document.getElementById("learn-resource").href = data[4];
     document.getElementById("range").innerHTML = `Valid range 1 to ${data[1]}`;
+
     questions = data[2];
     answers = data[3];
 
@@ -145,10 +153,12 @@ category_btns = document.querySelectorAll(".category");
 
 category_btns.forEach((btn, index) => {
     btn.addEventListener("click", function() {
-        document
-              .getElementById("category-select")
-              .classList.toggle("hidden");
+      if (btn.value == "spellings") {
+        window.open("spelling.html", "_blank");
+      } else {
+        document.getElementById("category-select").classList.toggle("hidden");
             updateForm(btn.value);
             document.getElementById("form").classList.toggle("hidden");
+      }
     })
 })
