@@ -32,6 +32,12 @@ var SCORE = 0;
 var QUESTION;
 var ANSWER;
 var seen = new Set();
+var num;
+
+const buttons = document.querySelectorAll(".option");
+
+const timerBar = document.querySelector(".timer-bar");
+var timer;
 
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -48,17 +54,16 @@ function newQuestion() {
   if (seen.size == TARGET) {
     QUESTION = "COMPLETED";
     document.getElementById("options").innerHTML = "";
+    document.querySelector(".timer-container").classList.add("hidden");
     return [];
   }
 
-  var num = Math.floor(Math.random() * TARGET);
+  num = Math.floor(Math.random() * TARGET);
   while (seen.has(num)) {
     num = Math.floor(Math.random() * TARGET);
   }
-  seen.add(num);
 
   QUESTION = "Find the correct spelling";
-
 
   let q = DATA[num];
   ANSWER = q[0];
@@ -91,21 +96,34 @@ function updateQuestion() {
   }
 
   document.getElementById("score").innerHTML = `${SCORE}/${TARGET}`;
-}
 
-let buttons = document.querySelectorAll(".option");
+  startTimer(10);
+  buttons.forEach((btn, i) => {
+    btn.style.background = "#333333";
+    btn.disabled = false;
+  });
+}
 
 buttons.forEach((button, index) => {
   button.addEventListener("click", function () {
     if (ANSWER == button.value) {
       SCORE += 1;
-      updateQuestion();
-      buttons.forEach((btn, i) => {
-        btn.style.background = "#333333";
-      });
+      document.getElementById("score").innerHTML = `${SCORE}/${TARGET}`;
+      button.style.background = "green";
+      seen.add(num);
     } else {
-      button.style.background = "red";
+      button.style.background = "#FF1A1A";
     }
+
+    buttons.forEach((btn, i) => {
+      if (ANSWER == btn.value) {
+        btn.style.background = "green";
+      }
+      btn.disabled = "true";
+    });
+
+    stopTimer();
+    setTimeout(() => updateQuestion(), 2000);
   });
 });
 
@@ -141,6 +159,36 @@ function updateForm(category) {
   document.getElementById("end").max = data[1];
 }
 
-category_btns = document.querySelectorAll(".category");
+function startingTimer(time) {
+  timerBar.style.transition = `width ${time}s ease-out`;
+  timerBar.style.width = "0%";
+  timeLeft = time;
+
+  // Start the countdown
+  timer = setInterval(() => {
+    timeLeft--;
+
+    if (timeLeft <= 0) {
+      stopTimer();
+      updateQuestion();
+    }
+  }, 1000);
+}
+
+function startTimer(time) {
+  timerBar.style.transition = "none";
+  timerBar.style.width =
+    document.querySelector(".timer-container").offsetWidth + "px";
+
+  setTimeout(() => {
+    startingTimer(time + 1);
+  }, 50);
+}
+
+function stopTimer() {
+  clearInterval(timer);
+  let currentWidth = timerBar.offsetWidth;
+  timerBar.style.width = currentWidth + "px";
+}
 
 updateForm("spellings");
