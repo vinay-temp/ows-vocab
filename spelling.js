@@ -123,7 +123,7 @@ buttons.forEach((button, index) => {
     });
 
     stopTimer();
-    setTimeout(() => updateQuestion(), 2000);
+    setTimeout(() => updateQuestion(), 4000);
   });
 });
 
