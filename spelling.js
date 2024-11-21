@@ -106,6 +106,7 @@ function updateQuestion() {
 
 buttons.forEach((button, index) => {
   button.addEventListener("click", function () {
+    let val = 2000;
     if (ANSWER == button.value) {
       SCORE += 1;
       document.getElementById("score").innerHTML = `${SCORE}/${TARGET}`;
@@ -113,6 +114,7 @@ buttons.forEach((button, index) => {
       seen.add(num);
     } else {
       button.style.background = "#FF1A1A";
+      val = 4000;
     }
 
     buttons.forEach((btn, i) => {
@@ -123,7 +125,7 @@ buttons.forEach((button, index) => {
     });
 
     stopTimer();
-    setTimeout(() => updateQuestion(), 4000);
+    setTimeout(() => updateQuestion(), val);
   });
 });
 
