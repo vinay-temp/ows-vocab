@@ -34,6 +34,9 @@ var ANSWER;
 var seen = new Set();
 var num;
 
+var CORRECT_ANSWER = 0;
+var ANSWER_BUTTON;
+
 const buttons = document.querySelectorAll(".option");
 
 const timerBar = document.querySelector(".timer-bar");
@@ -89,6 +92,7 @@ function newQuestion() {
 function updateQuestion() {
   let options = newQuestion();
   document.getElementById("question").innerHTML = `${QUESTION}`;
+  document.getElementById("msg").style.color = "#121212";
 
   for (let i = 0; i < options.length; i++) {
     document.getElementById("option" + i).innerHTML = options[i];
@@ -101,31 +105,46 @@ function updateQuestion() {
   buttons.forEach((btn, i) => {
     btn.style.background = "#333333";
     btn.disabled = false;
+    if (btn.value == ANSWER) ANSWER_BUTTON = btn;
   });
 }
 
 buttons.forEach((button, index) => {
   button.addEventListener("click", function () {
-    let val = 2000;
     if (ANSWER == button.value) {
-      SCORE += 1;
+      if (CORRECT_ANSWER == 0) SCORE += 1;
+
       document.getElementById("score").innerHTML = `${SCORE}/${TARGET}`;
       button.style.background = "green";
       seen.add(num);
+      
+      CORRECT_ANSWER += 1;
+
+      if (CORRECT_ANSWER == 2) {
+        setTimeout(() => updateQuestion(), 100);
+        CORRECT_ANSWER = 0;
+      } else {
+        document.getElementById("msg").style.color = "white";
+        document.getElementById("msg").innerHTML = "Correct!<br><br>Click again to continue";
+      }
+
     } else {
       button.style.background = "#FF1A1A";
-      val = 4000;
+      CORRECT_ANSWER += 1;
+      document.getElementById("msg").style.color = "white";
+      document.getElementById("msg").innerHTML = "Wrong!<br><br>Click on correct answer to continue";
     }
 
     buttons.forEach((btn, i) => {
+      btn.disabled = true;
+      
       if (ANSWER == btn.value) {
         btn.style.background = "green";
+        btn.disabled = false;
       }
-      btn.disabled = "true";
     });
 
     stopTimer();
-    setTimeout(() => updateQuestion(), val);
   });
 });
 
@@ -172,7 +191,14 @@ function startingTimer(time) {
 
     if (timeLeft <= 0) {
       stopTimer();
-      updateQuestion();
+      document.getElementById("msg").style.color = "white";
+      document.getElementById("msg").innerHTML = "Time's Up!<br><br>Click on correct answer to continue";
+      buttons.forEach((btn, i) => {
+        btn.disabled = true;
+      });
+      ANSWER_BUTTON.style.background = "green";
+      ANSWER_BUTTON.disabled = false;
+      CORRECT_ANSWER = 1;
     }
   }, 1000);
 }

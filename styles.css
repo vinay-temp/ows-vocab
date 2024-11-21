@@ -136,3 +136,8 @@ a {
     background-color: #4caf50;
     border-radius: 10px;
 }
+
+#msg {
+    font-family: monospace;
+    margin-top: 15px;
+}
