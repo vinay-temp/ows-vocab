@@ -124,7 +124,6 @@ buttons.forEach((button, index) => {
 
       document.getElementById("score").innerHTML = `${SCORE}/${TARGET}`;
       button.style.background = "green";
-      seen.add(num);
 
       CORRECT_ANSWER += 1;
 
