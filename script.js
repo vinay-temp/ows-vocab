@@ -106,7 +106,7 @@ function updateQuestion() {
 
   document.getElementById("score").innerHTML = `${SCORE}/${TARGET}`;
 
-  startTimer(10);
+  if (options.length > 0) startTimer(10);
   buttons.forEach((btn, i) => {
     btn.style.background = "#333333";
     btn.disabled = false;
