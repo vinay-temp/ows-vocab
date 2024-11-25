@@ -117,7 +117,10 @@ function updateQuestion() {
 buttons.forEach((button, index) => {
   button.addEventListener("click", function () {
     if (ANSWER == button.value) {
-      if (CORRECT_ANSWER == 0) SCORE += 1;
+      if (CORRECT_ANSWER == 0) {
+        SCORE += 1;
+        seen.add(num);
+      };
 
       document.getElementById("score").innerHTML = `${SCORE}/${TARGET}`;
       button.style.background = "green";
